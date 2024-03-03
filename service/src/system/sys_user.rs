@@ -470,6 +470,7 @@ pub async fn edit(db: &DatabaseConnection, req: SysUserEditReq, c_user_id: Strin
     let uid = req.id;
     // 更新
     let txn = db.begin().await?;
+
     // 更新用户信息
     sys_user::Entity::update_many()
         .col_expr(sys_user::Column::UserName, Expr::value(req.user_name))
@@ -503,6 +504,7 @@ pub async fn edit(db: &DatabaseConnection, req: SysUserEditReq, c_user_id: Strin
     super::sys_user_dept::edit_user_dept(&txn, &uid, req.dept_ids, &c_user_id).await?;
 
     txn.commit().await?;
+
     Ok("用户数据更新成功".to_string())
 }
 
